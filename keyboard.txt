@@ -1,0 +1,30 @@
+[General]
+emulate = Wii U GamePad
+api = Keyboard
+
+[Controller]
+rumble = 0
+leftRange = 1
+rightRange = 1
+leftDeadzone = 0.25
+rightDeadzone = 0.25
+buttonThreshold = 0.5
+1 = key_69
+2 = key_16
+3 = key_32
+4 = key_70
+5 = key_81
+6 = key_82
+7 = key_219
+8 = key_221
+9 = key_9
+10 = key_27
+15 = key_67
+17 = key_87
+18 = key_83
+19 = key_65
+20 = key_68
+21 = key_38
+22 = key_40
+23 = key_37
+24 = key_39

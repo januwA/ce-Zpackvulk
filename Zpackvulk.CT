@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="31">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>510</ID>
+      <Description>"满hp上限)120.0"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">[ENABLE]
+aobscan(maxhp_INJECT,10 45 0F 38 F0 74 15 64)
+alloc(newmem,$1000,maxhp_INJECT)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+  mov r14d,(float)120
+  jmp return
+
+maxhp_INJECT+01:
+  jmp newmem
+  nop 2
+return:
+registersymbol(maxhp_INJECT)
+
+[DISABLE]
+maxhp_INJECT+01:
+  db 45 0F 38 F0 74 15 64
+
+unregistersymbol(maxhp_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 25521398492
+
+25521398462: 41 FF A4 57 00 00 00 20     -  jmp qword ptr [r15+rdx*2+20000000]
+2552139846A: 90                          -  nop 
+2552139846B: 90                          -  nop 
+2552139846C: 83 AC 24 B0 02 00 00 08     -  sub dword ptr [rsp+000002B0],08
+25521398474: 8B 44 24 08                 -  mov eax,[rsp+08]
+25521398478: 49 89 C6                    -  mov r14,rax
+2552139847B: 45 0F 38 F1 74 05 E8        -  movbe [r13+rax-18],r14d
+25521398482: 83 C0 E8                    -  add eax,-18
+25521398485: 66 0F 10 84 E4 88 00 00 00  -  movupd xmm0,[rsp+00000088]
+2552139848E: 8B 54 24 10                 -  mov edx,[rsp+10]
+// ---------- INJECTING HERE ----------
+25521398492: 45 0F 38 F0 74 15 64        -  movbe r14d,[r13+rdx+64]
+// ---------- DONE INJECTING  ----------
+25521398499: 66 41 0F 6E C6              -  movd xmm0,r14d
+2552139849E: F3 0F 5A C0                 -  cvtss2sd xmm0,xmm0
+255213984A2: F2 0F 12 C0                 -  movddup xmm0,xmm0
+255213984A6: F2 44 0F 2C F0              -  cvttsd2si r14d,xmm0
+255213984AB: 45 89 F6                    -  mov r14d,r14d
+255213984AE: 66 49 0F 6E C6              -  movq xmm0,r14
+255213984B3: 48 89 C3                    -  mov rbx,rax
+255213984B6: 83 C3 08                    -  add ebx,08
+255213984B9: 66 41 0F 7E C6              -  movd r14d,xmm0
+255213984BE: 41 0F CE                    -  bswap r14d
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>30</ID>
+      <Description>"锁血"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">// 43 0F 38 F1 74 0D 08 83 AC 24 B0 02 00 00 03
+
+[ENABLE]
+aobscan(hp_INJECT,41 0F 38 F1 74 15 00 89 B4 24 80 00 00 00)
+alloc(newmem,$1000,hp_INJECT)
+
+label(return)
+
+newmem:
+  mov esi, #120
+  mov [r13+rdx],esi
+  jmp return
+
+hp_INJECT:
+  jmp newmem
+  nop 2
+return:
+
+registersymbol(hp_INJECT)
+
+[DISABLE]
+hp_INJECT:
+  db 41 0F 38 F1 74 15 00
+
+unregistersymbol(hp_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 2609C7E64D7
+
+2609C7E649A: 0F 1F 40 00                       -  nop dword ptr [rax+00]
+2609C7E649E: 83 AC 24 B0 02 00 00 03           -  sub dword ptr [rsp+000002B0],03
+2609C7E64A6: BE 01 00 00 00                    -  mov esi,00000001
+2609C7E64AB: 43 0F 38 F1 74 0D 08              -  movbe [r13+r9+08],esi
+2609C7E64B2: E9 14 00 00 00                    -  jmp 2609C7E64CB
+2609C7E64B7: 83 AC 24 B0 02 00 00 02           -  sub dword ptr [rsp+000002B0],02
+2609C7E64BF: BE 00 00 00 00                    -  mov esi,00000000
+2609C7E64C4: 43 0F 38 F1 74 0D 08              -  movbe [r13+r9+08],esi
+2609C7E64CB: 83 AC 24 B0 02 00 00 03           -  sub dword ptr [rsp+000002B0],03
+2609C7E64D3: 8B 54 24 74                       -  mov edx,[rsp+74]
+// ---------- INJECTING HERE ----------
+2609C7E64D7: 41 0F 38 F1 74 15 00              -  movbe [r13+rdx+00],esi
+// ---------- DONE INJECTING  ----------
+2609C7E64DE: 89 B4 24 80 00 00 00              -  mov [rsp+00000080],esi
+2609C7E64E5: 8B 54 24 68                       -  mov edx,[rsp+68]
+2609C7E64E9: 41 0F 38 F0 44 15 00              -  movbe eax,[r13+rdx+00]
+2609C7E64F0: 89 44 24 10                       -  mov [rsp+10],eax
+2609C7E64F4: C7 84 24 B8 02 00 00 B0 52 D4 02  -  mov [rsp+000002B8],02D452B0
+2609C7E64FF: BA 94 99 D4 02                    -  mov edx,02D49994
+2609C7E6504: 41 FF A7 28 33 A9 25              -  jmp qword ptr [r15+25A93328]
+2609C7E650B: 83 AC 24 B0 02 00 00 04           -  sub dword ptr [rsp+000002B0],04
+2609C7E6513: 8B 54 24 78                       -  mov edx,[rsp+78]
+2609C7E6517: 41 0F 38 F0 84 15 E8 00 00 00     -  movbe eax,[r13+rdx+000000E8]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>45</ID>
+      <Description>"自动秒怪)一切能受到伤害的物体"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">{
+      敌人hp    武器耐久
+  rbx 20000000  40000000
+}
+
+define(value, 0x0)
+
+[ENABLE]
+aobscan(mmm_INJECT,41 0F 38 F1 44 15 00 89 EB)
+alloc(newmem,$1000,mmm_INJECT)
+
+label(enemy)
+label(return)
+
+newmem:
+  pushf
+  cmp rbx,0x40000000 // 不是武器耐久，全部当作敌人
+  jne enemy
+  popf
+  jmp return
+
+enemy:
+  mov [r13+rdx],value
+  popf
+  jmp return
+
+mmm_INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(mmm_INJECT)
+
+[DISABLE]
+
+mmm_INJECT:
+  db 41 0F 38 F1 44 15 00
+
+unregistersymbol(mmm_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 22F16D1D66C
+
+22F16D1D63F: 0F BA A4 24 A9 02 00 00 00  -  bt [rsp+000002A9],00
+22F16D1D648: 11 DB                       -  adc ebx,ebx
+22F16D1D64A: 0F BA A4 24 AA 02 00 00 00  -  bt [rsp+000002AA],00
+22F16D1D653: 11 DB                       -  adc ebx,ebx
+22F16D1D655: 0F BA A4 24 AB 02 00 00 00  -  bt [rsp+000002AB],00
+22F16D1D65E: 11 DB                       -  adc ebx,ebx
+22F16D1D660: 89 DD                       -  mov ebp,ebx
+22F16D1D662: 89 5C 24 2C                 -  mov [rsp+2C],ebx
+22F16D1D666: C1 C5 03                    -  rol ebp,03
+22F16D1D669: 83 E5 01                    -  and ebp,01
+// ---------- INJECTING HERE ----------
+22F16D1D66C: 41 0F 38 F1 44 15 00        -  movbe [r13+rdx+00],eax
+// ---------- DONE INJECTING  ----------
+22F16D1D673: 89 EB                       -  mov ebx,ebp
+22F16D1D675: 89 6C 24 20                 -  mov [rsp+20],ebp
+22F16D1D679: 83 F3 01                    -  xor ebx,01
+22F16D1D67C: 89 5C 24 10                 -  mov [rsp+10],ebx
+22F16D1D680: 41 0F 38 F0 5C 3D 30        -  movbe ebx,[r13+rdi+30]
+22F16D1D687: 89 5C 24 6C                 -  mov [rsp+6C],ebx
+22F16D1D68B: 41 0F 38 F0 5C 3D 34        -  movbe ebx,[r13+rdi+34]
+22F16D1D692: 89 5C 24 70                 -  mov [rsp+70],ebx
+22F16D1D696: 41 0F 38 F0 5C 3D 38        -  movbe ebx,[r13+rdi+38]
+22F16D1D69D: 89 5C 24 74                 -  mov [rsp+74],ebx
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>51</ID>
+      <Description>"无限耐久"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">[ENABLE]
+aobscan(yuyu_INJECT,41 0F 38 F0 54 05 00 48 89 D3 83 C3 FF 41)
+alloc(newmem,$1000,yuyu_INJECT)
+
+label(return)
+
+newmem:
+  //movbe edx,[r13+rax+00]
+  mov [r13+rax],0xE8030000
+  mov edx,0x3e8 // 1000
+  jmp return
+
+yuyu_INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(yuyu_INJECT)
+
+[DISABLE]
+yuyu_INJECT:
+  db 41 0F 38 F0 54 05 00
+
+unregistersymbol(yuyu_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 22F16CFB5BD
+
+22F16CFB57E: 89 94 24 BC 02 00 00              -  mov [rsp+000002BC],edx
+22F16CFB585: 89 D8                             -  mov eax,ebx
+22F16CFB587: 89 44 24 10                       -  mov [rsp+10],eax
+22F16CFB58B: B8 20 93 00 02                    -  mov eax,02009320
+22F16CFB590: 89 84 24 B8 02 00 00              -  mov [rsp+000002B8],eax
+22F16CFB597: 8B 94 24 BC 02 00 00              -  mov edx,[rsp+000002BC]
+22F16CFB59E: C7 84 24 B8 02 00 00 20 93 00 02  -  mov [rsp+000002B8],02009320
+22F16CFB5A9: 41 FF A4 57 00 00 00 20           -  jmp qword ptr [r15+rdx*2+20000000]
+22F16CFB5B1: 83 AC 24 B0 02 00 00 05           -  sub dword ptr [rsp+000002B0],05
+22F16CFB5B9: 8B 44 24 10                       -  mov eax,[rsp+10]
+// ---------- INJECTING HERE ----------
+22F16CFB5BD: 41 0F 38 F0 54 05 00              -  movbe edx,[r13+rax+00]
+// ---------- DONE INJECTING  ----------
+22F16CFB5C4: 48 89 D3                          -  mov rbx,rdx
+22F16CFB5C7: 83 C3 FF                          -  add ebx,-01
+22F16CFB5CA: 41 89 D0                          -  mov r8d,edx
+22F16CFB5CD: 89 54 24 30                       -  mov [rsp+30],edx
+22F16CFB5D1: 41 09 D8                          -  or r8d,ebx
+22F16CFB5D4: 89 5C 24 34                       -  mov [rsp+34],ebx
+22F16CFB5D8: 4C 89 C2                          -  mov rdx,r8
+22F16CFB5DB: C1 EA 1F                          -  shr edx,1F
+22F16CFB5DE: 85 D2                             -  test edx,edx
+22F16CFB5E0: 0F 98 84 24 8C 02 00 00           -  sets byte ptr [rsp+0000028C]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>55</ID>
+      <Description>"9999 弓箭"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">[ENABLE]
+aobscan(fgsdf_INJECT,45 0F 38 F1 54 35 10 44 89 54 24 04 C7)
+alloc(newmem,$1000,fgsdf_INJECT)
+
+label(return)
+
+newmem:
+  mov [r13+rsi+10],0x0f270000
+  jmp return
+
+fgsdf_INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(fgsdf_INJECT)
+
+[DISABLE]
+
+fgsdf_INJECT:
+  db 45 0F 38 F1 54 35 10
+
+unregistersymbol(fgsdf_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 230CBBD956C
+
+230CBBD9541: 0F 8D 9B 00 00 00                 -  jnl 230CBBD95E2
+230CBBD9547: 83 AC 24 B0 02 00 00 06           -  sub dword ptr [rsp+000002B0],06
+230CBBD954F: 41 29 C2                          -  sub r10d,eax
+230CBBD9552: B8 01 00 00 00                    -  mov eax,00000001
+230CBBD9557: 89 44 24 18                       -  mov [rsp+18],eax
+230CBBD955B: 8B 54 24 5C                       -  mov edx,[rsp+5C]
+230CBBD955F: 89 D0                             -  mov eax,edx
+230CBBD9561: 89 44 24 10                       -  mov [rsp+10],eax
+230CBBD9565: 44 89 C8                          -  mov eax,r9d
+230CBBD9568: 89 44 24 14                       -  mov [rsp+14],eax
+// ---------- INJECTING HERE ----------
+230CBBD956C: 45 0F 38 F1 54 35 10              -  movbe [r13+rsi+10],r10d
+// ---------- DONE INJECTING  ----------
+230CBBD9573: 44 89 54 24 04                    -  mov [rsp+04],r10d
+230CBBD9578: C7 84 24 B8 02 00 00 70 67 EB 02  -  mov [rsp+000002B8],02EB6770
+230CBBD9583: BA 58 F1 EA 02                    -  mov edx,02EAF158
+230CBBD9588: 41 FF A7 B0 E2 D5 25              -  jmp qword ptr [r15+25D5E2B0]
+230CBBD958F: 83 AC 24 B0 02 00 00 04           -  sub dword ptr [rsp+000002B0],04
+230CBBD9597: 8B 54 24 5C                       -  mov edx,[rsp+5C]
+230CBBD959B: 48 89 D0                          -  mov rax,rdx
+230CBBD959E: 05 00 00 04 00                    -  add eax,00040000
+230CBBD95A3: 41 0F B6 94 05 28 81 FF FF        -  movzx edx,byte ptr [r13+rax-00007ED8]
+230CBBD95AC: 89 44 24 2C                       -  mov [rsp+2C],eax
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>60</ID>
+      <Description>"9999材料)打开一次背包后才启用脚本"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">[ENABLE]
+aobscan(urwen_INJECT,45 0F 38 F0 44 05 10 44 89 44 24 14)
+alloc(newmem,$1000,urwen_INJECT)
+
+label(code)
+label(return)
+
+newmem:
+  mov [r13+rax+10], #254214144
+code:
+  // movbe r8d,[r13+rax+10]
+  mov r8,#9999
+  jmp return
+
+urwen_INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(urwen_INJECT)
+
+[DISABLE]
+
+urwen_INJECT:
+  db 45 0F 38 F0 44 05 10
+
+unregistersymbol(urwen_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 29EF77648C0
+
+29EF7764887: 41 FF A7 88 D0 21 26              -  jmp qword ptr [r15+2621D088]
+29EF776488E: 83 AC 24 B0 02 00 00 02           -  sub dword ptr [rsp+000002B0],02
+29EF7764896: 8B 5C 24 10                       -  mov ebx,[rsp+10]
+29EF776489A: 83 FB 00                          -  cmp ebx,00
+29EF776489D: 0F 94 84 24 8E 02 00 00           -  sete byte ptr [rsp+0000028E]
+29EF77648A5: 44 8B 44 24 14                    -  mov r8d,[rsp+14]
+29EF77648AA: 8B 6C 24 74                       -  mov ebp,[rsp+74]
+29EF77648AE: 0F 84 E4 00 00 00                 -  je 29EF7764998
+29EF77648B4: 83 AC 24 B0 02 00 00 03           -  sub dword ptr [rsp+000002B0],03
+29EF77648BC: 8B 44 24 78                       -  mov eax,[rsp+78]
+// ---------- INJECTING HERE ----------
+29EF77648C0: 45 0F 38 F0 44 05 10              -  movbe r8d,[r13+rax+10]
+// ---------- DONE INJECTING  ----------
+29EF77648C7: 44 89 44 24 14                    -  mov [rsp+14],r8d
+29EF77648CC: 89 EB                             -  mov ebx,ebp
+29EF77648CE: 89 5C 24 10                       -  mov [rsp+10],ebx
+29EF77648D2: C7 84 24 B8 02 00 00 98 04 ED 02  -  mov [rsp+000002B8],02ED0498
+29EF77648DD: BA 3C 02 ED 02                    -  mov edx,02ED023C
+29EF77648E2: 41 FF A7 78 04 DA 25              -  jmp qword ptr [r15+25DA0478]
+29EF77648E9: 83 AC 24 B0 02 00 00 0B           -  sub dword ptr [rsp+000002B0],0B
+29EF77648F1: B8 00 00 22 10                    -  mov eax,10220000
+29EF77648F6: 8B 54 24 78                       -  mov edx,[rsp+78]
+29EF77648FA: 41 0F 38 F0 5C 15 08              -  movbe ebx,[r13+rdx+08]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>42</ID>
+      <Description>"无限耐力"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">[ENABLE]
+aobscan(nl2_INJECT,45 0F 38 F1 74 05 68 8B 54 24 08 45)
+alloc(newmem,$1000,nl2_INJECT)
+
+alloc(pNL,$18,nl2_INJECT)
+pNL:
+  dq 0
+
+label(return)
+
+newmem:
+  push rdx
+  lea rdx,[r13+rax]
+  mov [pNL],rdx
+  pop rdx
+
+  // r13+rax+68-4 max hp
+  // movd [r13+rax+68],xmm15
+  jmp return
+
+nl2_INJECT:
+  jmp newmem
+  nop 2
+return:
+registersymbol(nl2_INJECT pNL)
+
+[DISABLE]
+nl2_INJECT:
+  db 45 0F 38 F1 74 05 68
+
+unregistersymbol(nl2_INJECT pNL)
+dealloc(newmem pNL)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 22F1DD6BE8D
+
+22F1DD6BE42: 66 0F 11 84 E4 78 02 00 00        -  movupd [rsp+00000278],xmm0
+22F1DD6BE4B: 66 0F 11 8C E4 98 00 00 00        -  movupd [rsp+00000098],xmm1
+22F1DD6BE54: C7 84 24 B8 02 00 00 9C 9D D4 02  -  mov [rsp+000002B8],02D49D9C
+22F1DD6BE5F: BA 5C AC E1 02                    -  mov edx,02E1AC5C
+22F1DD6BE64: 41 FF A7 B8 58 C3 25              -  jmp qword ptr [r15+25C358B8]
+22F1DD6BE6B: 83 AC 24 B0 02 00 00 08           -  sub dword ptr [rsp+000002B0],08
+22F1DD6BE73: 66 0F 10 84 E4 78 02 00 00        -  movupd xmm0,[rsp+00000278]
+22F1DD6BE7C: 8B 84 24 80 00 00 00              -  mov eax,[rsp+00000080]
+22F1DD6BE83: F2 44 0F 5A F8                    -  cvtsd2ss xmm15,xmm0
+22F1DD6BE88: 66 45 0F 7E FE                    -  movd r14d,xmm15
+// ---------- INJECTING HERE ----------
+22F1DD6BE8D: 45 0F 38 F1 74 05 68              -  movbe [r13+rax+68],r14d
+// ---------- DONE INJECTING  ----------
+22F1DD6BE94: 8B 54 24 08                       -  mov edx,[rsp+08]
+22F1DD6BE98: 45 0F 38 F0 74 15 18              -  movbe r14d,[r13+rdx+18]
+22F1DD6BE9F: 66 41 0F 6E C6                    -  movd xmm0,r14d
+22F1DD6BEA4: F3 0F 5A C0                       -  cvtss2sd xmm0,xmm0
+22F1DD6BEA8: F2 0F 12 C0                       -  movddup xmm0,xmm0
+22F1DD6BEAC: 41 0F 38 F0 44 15 0C              -  movbe eax,[r13+rdx+0C]
+22F1DD6BEB3: 89 84 24 80 00 00 00              -  mov [rsp+00000080],eax
+22F1DD6BEBA: 4D 8B 74 15 10                    -  mov r14,[r13+rdx+10]
+22F1DD6BEBF: 49 0F CE                          -  bswap r14
+22F1DD6BEC2: 66 4D 0F 6E FE                    -  movq xmm15,r14
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>61</ID>
+          <Description>"value)float"</Description>
+          <LastState Value="00007A44" RealAddress="2EAFC96F298"/>
+          <ShowAsHex>1</ShowAsHex>
+          <VariableType>4 Bytes</VariableType>
+          <Address>[pNL]+68</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>509</ID>
+      <Description>"停止时间"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">[ENABLE]
+aobscan(timer_INJECT,45 0F 38 F1 74 15 14 41 0F 38 F0 5C 05)
+registersymbol(timer_INJECT)
+
+timer_INJECT:
+  db 90 90 90 90 90 90 90
+
+[DISABLE]
+timer_INJECT:
+  db 45 0F 38 F1 74 15 14
+
+unregistersymbol(timer_INJECT)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 1E4B4E76821
+
+1E4B4E767DD: C6 84 24 8E 02 00 00 00     -  mov byte ptr [rsp+0000028E],00
+1E4B4E767E5: 66 0F 11 84 E4 58 01 00 00  -  movupd [rsp+00000158],xmm0
+1E4B4E767EE: 66 0F 11 8C E4 88 00 00 00  -  movupd [rsp+00000088],xmm1
+1E4B4E767F7: 0F BA A4 24 8E 02 00 00 00  -  bt [rsp+0000028E],00
+1E4B4E76800: 72 70                       -  jb 1E4B4E76872
+1E4B4E76802: 0F 1F 40 00                 -  nop dword ptr [rax+00]
+1E4B4E76806: 83 AC 24 B0 02 00 00 07     -  sub dword ptr [rsp+000002B0],07
+1E4B4E7680E: 66 0F 10 84 E4 58 01 00 00  -  movupd xmm0,[rsp+00000158]
+1E4B4E76817: F2 44 0F 5A F8              -  cvtsd2ss xmm15,xmm0
+1E4B4E7681C: 66 45 0F 7E FE              -  movd r14d,xmm15
+// ---------- INJECTING HERE ----------
+1E4B4E76821: 45 0F 38 F1 74 15 14        -  movbe [r13+rdx+14],r14d
+// ---------- DONE INJECTING  ----------
+1E4B4E76828: 41 0F 38 F0 5C 05 1C        -  movbe ebx,[r13+rax+1C]
+1E4B4E7682F: 41 0F 38 F0 54 05 14        -  movbe edx,[r13+rax+14]
+1E4B4E76836: 89 94 24 80 00 00 00        -  mov [rsp+00000080],edx
+1E4B4E7683D: 89 DA                       -  mov edx,ebx
+1E4B4E7683F: 89 5C 24 04                 -  mov [rsp+04],ebx
+1E4B4E76843: 89 94 24 B8 02 00 00        -  mov [rsp+000002B8],edx
+1E4B4E7684A: 83 C0 18                    -  add eax,18
+1E4B4E7684D: 89 44 24 08                 -  mov [rsp+08],eax
+1E4B4E76851: B8 01 00 00 00              -  mov eax,00000001
+1E4B4E76856: 89 44 24 10                 -  mov [rsp+10],eax
+}
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <Comments>0000000000000000
+000001d000000000
+000001d1FFFFFFFF
+
+2300 - 2197 = 361‬
+// 敌人hp 武器耐久 寄存器差别
+rax 新数值
+rbx 20000000  40000000
+rsi 原始数值
+rbp 01   0
+r9 101A8AAC  100018b4
+r10 0        1
+r11 02aef1bc 0200492c</Comments>
+</CheatTable>
