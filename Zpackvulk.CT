@@ -125,7 +125,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>45</ID>
       <Description>"自动秒怪)一切能受到伤害的物体"</Description>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript Async="1">{
       敌人hp    武器耐久
@@ -199,7 +199,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>51</ID>
       <Description>"无限耐久"</Description>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript Async="1">[ENABLE]
 aobscan(yuyu_INJECT,41 0F 38 F0 54 05 00 48 89 D3 83 C3 FF 41)
@@ -378,7 +378,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>42</ID>
       <Description>"无限耐力"</Description>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript Async="1">[ENABLE]
 aobscan(nl2_INJECT,45 0F 38 F1 74 05 68 8B 54 24 08 45)
@@ -396,7 +396,11 @@ newmem:
   mov [pNL],rdx
   pop rdx
 
-  // r13+rax+68-4 max hp
+  // r13+rax+68-4    max hp
+  // r13+rax+68-8    x或者y
+  // r13+rax+68-c    z
+  // r13+rax+68-10   x或者y
+
   // movd [r13+rax+68],xmm15
   jmp return
 
@@ -445,17 +449,66 @@ dealloc(newmem pNL)
         <CheatEntry>
           <ID>61</ID>
           <Description>"value)float"</Description>
-          <LastState Value="00007A44" RealAddress="2EAFC96F298"/>
           <ShowAsHex>1</ShowAsHex>
           <VariableType>4 Bytes</VariableType>
           <Address>[pNL]+68</Address>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>519</ID>
+          <Description>"打印当前坐标"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$lua}
+
+if syntaxcheck then return end
+
+-- http://www.penlight.luaforge.net/
+-- http://stevedonovan.github.io/Penlight/api/classes/pl.List.html
+require 'pl'
+
+local posAddr = {
+  x = "[pNL]+68-8-c",
+  y = "[pNL]+68-10-c",
+  z = "[pNL]+68-c-c"
+}
+
+[ENABLE]
+if readInteger("[pNL]") == 0 then return end
+
+-- 获取地址中的值 mobve value
+local ox = readInteger(posAddr['x'])  -- x
+local oy = readInteger(posAddr['y']) -- y
+local oz = readInteger(posAddr['z'])  -- z
+
+-- 转换一下
+local x = List():extend(dwordToByteTable(ox)):reverse()
+local y = List():extend(dwordToByteTable(oy)):reverse()
+local z = List():extend(dwordToByteTable(oz)):reverse()
+
+--
+x = byteTableToFloat(x)
+y = byteTableToFloat(y)
+z = byteTableToFloat(z)
+
+local meg = string.format([[
+x: %f, y: %f, z: %f
+ox: %d, oy: %d, oz: %d
+]],x,y,z, ox, oy, oz)
+-- showMessage( meg )
+
+
+inputQuery('当前坐标', nil, meg)
+ 
+ 
+[DISABLE]
+</AssemblerScript>
         </CheatEntry>
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
       <ID>509</ID>
       <Description>"停止时间"</Description>
-      <LastState Activated="1"/>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript Async="1">[ENABLE]
 aobscan(timer_INJECT,45 0F 38 F1 74 15 14 41 0F 38 F0 5C 05)
@@ -499,12 +552,69 @@ unregistersymbol(timer_INJECT)
 }
 </AssemblerScript>
     </CheatEntry>
+    <CheatEntry>
+      <ID>667</ID>
+      <Description>"10耐热)打开关闭背包生效"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript Async="1">[ENABLE]
+aobscan(hrtrfdfd_INJECT,41 88 84 15 48 01 00 00 8B 44)
+alloc(newmem,$1000,hrtrfdfd_INJECT)
+
+label(return)
+
+newmem:
+  mov al, 0x0A
+  mov [r13+rdx+00000148],al
+  jmp return
+
+hrtrfdfd_INJECT:
+  jmp newmem
+  nop 3
+return:
+registersymbol(hrtrfdfd_INJECT)
+
+[DISABLE]
+hrtrfdfd_INJECT:
+  db 41 88 84 15 48 01 00 00
+
+unregistersymbol(hrtrfdfd_INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: 2621B8DBD04
+
+2621B8DBCC9: 89 94 24 80 00 00 00              -  mov [rsp+00000080],edx
+2621B8DBCD0: 8B 54 24 7C                       -  mov edx,[rsp+7C]
+2621B8DBCD4: 89 D0                             -  mov eax,edx
+2621B8DBCD6: 89 44 24 10                       -  mov [rsp+10],eax
+2621B8DBCDA: C7 84 24 B8 02 00 00 34 04 D9 02  -  mov [rsp+000002B8],02D90434
+2621B8DBCE5: BA 5C 03 D9 02                    -  mov edx,02D9035C
+2621B8DBCEA: 41 FF A7 B8 06 B2 25              -  jmp qword ptr [r15+25B206B8]
+2621B8DBCF1: 83 AC 24 B0 02 00 00 07           -  sub dword ptr [rsp+000002B0],07
+2621B8DBCF9: 8B 44 24 10                       -  mov eax,[rsp+10]
+2621B8DBCFD: 8B 94 24 80 00 00 00              -  mov edx,[rsp+00000080]
+// ---------- INJECTING HERE ----------
+2621B8DBD04: 41 88 84 15 48 01 00 00           -  mov [r13+rdx+00000148],al
+// ---------- DONE INJECTING  ----------
+2621B8DBD0C: 8B 44 24 08                       -  mov eax,[rsp+08]
+2621B8DBD10: 41 0F 38 F0 5C 05 14              -  movbe ebx,[r13+rax+14]
+2621B8DBD17: 41 0F 38 F0 6C 05 08              -  movbe ebp,[r13+rax+08]
+2621B8DBD1E: 89 6C 24 7C                       -  mov [rsp+7C],ebp
+2621B8DBD22: 89 DD                             -  mov ebp,ebx
+2621B8DBD24: 89 5C 24 04                       -  mov [rsp+04],ebx
+2621B8DBD28: 89 AC 24 B8 02 00 00              -  mov [rsp+000002B8],ebp
+2621B8DBD2F: 41 0F 38 F0 54 05 0C              -  movbe edx,[r13+rax+0C]
+2621B8DBD36: 89 94 24 80 00 00 00              -  mov [rsp+00000080],edx
+2621B8DBD3D: 83 C0 10                          -  add eax,10
+}
+</AssemblerScript>
+    </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>
   <Comments>0000000000000000
-000001d000000000
-000001d1FFFFFFFF
-
+0000020000000000
+0000020FFFFFFFFF
 2300 - 2197 = 361‬
 // 敌人hp 武器耐久 寄存器差别
 rax 新数值
@@ -513,5 +623,7 @@ rsi 原始数值
 rbp 01   0
 r9 101A8AAC  100018b4
 r10 0        1
-r11 02aef1bc 0200492c</Comments>
+r11 02aef1bc 0200492c
+ox: 2146352452, oy: 2321557188, oz: 2837065027
+</Comments>
 </CheatTable>
